@@ -8,7 +8,7 @@
 /node_modules
 
 /build
-/*.min.js
-/*.min.css
+/script.min.js
+/style.min.css
 /*.min.js.map
 /sftpCache.json
