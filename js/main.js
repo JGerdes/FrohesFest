@@ -1,6 +1,6 @@
 //(function(){
 
-var game = new Phaser.Game(1280, 720, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(1280, 720, Phaser.CANVAS, '', { preload: preload, create: create, update: update });
 
 var mountainRow1, mountainRow2, frontTrees, sledge;
 
