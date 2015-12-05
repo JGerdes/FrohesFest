@@ -72,5 +72,5 @@ Segment.prototype.destroy = function(){
 };
 
 Segment.prototype.isVisible = function(){
-	return this.game.view.x < this.lastPoint.x;
+	return this.game.camera.view.x < this.lastPoint.x;
 }

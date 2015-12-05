@@ -4,7 +4,7 @@ var game = new Phaser.Game(1280, 720, Phaser.CANVAS, '', { preload: preload, cre
 
 var mountainRow1, mountainRow2, frontTrees, 
 	sledge,
-	sections;
+	segments;
 
 function preload() {
 	game.load.image('background_light', 'assets/graphics/background_light.png');
@@ -45,29 +45,29 @@ function create() {
 
 	}
 
-	sections = [];
+	segments = [];
 
-	sections.push(new Segment(game, {
+	segments.push(new Segment(game, {
 			'x': [ 0, 200, 600, 900],
 			'y': [ 440, 210, 250, 90]
 		}).create()
 	);
-	sections.push(new Segment(game, {
+	segments.push(new Segment(game, {
 			'x': [ 900, 1200, 1400],
 			'y': [ 90, 10, 100]
 		}).create()
 	);
-	sections.push(new Segment(game, {
+	segments.push(new Segment(game, {
 			'x': [ 1400, 2000, 2500, 3000],
 			'y': [ 100, 500, 250, 100]
 		}).create()
 	);
-	sections.push(new Segment(game, {
+	segments.push(new Segment(game, {
 			'x': [ 3000, 3500, 4000, 4500, 5000, 5500],
 			'y': [ 100, 200, 100, 200, 100, 200]
 		}).create()
 	);
-	sections.push(new Segment(game, {
+	segments.push(new Segment(game, {
 			'x': [ 5500, 6000, 7500, 8000],
 			'y': [ 200, 300, 50, 300]
 		}).create()
@@ -110,6 +110,11 @@ function update() {
 	frontTrees.x = game.camera.x * - 0.8;
 	mountainRow1.x = game.camera.x * 0.9;
 	mountainRow2.x = game.camera.x * 0.8;
+
+	if(segments.length > 0 && !segments[0].isVisible()){
+		segments.shift().destroy();
+		console.log("removed section. left:", segments.length);
+	}
 }
 
 
