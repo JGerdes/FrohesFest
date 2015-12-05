@@ -7,6 +7,7 @@ var frontTrees;
 function preload() {
 	game.load.image('background_light', 'assets/graphics/background_light.png');
 	game.load.image('tree01', 'assets/graphics/tree01.png');
+	game.load.image('sledge', 'assets/graphics/sledge.png');
 }
 
 function create() {
@@ -33,6 +34,9 @@ function create() {
 	bmd.ctx.lineTo(game.world.width, game.world.height);
 	bmd.ctx.closePath();
 	bmd.ctx.fill();
+
+
+	game.add.sprite(500, 300, 'sledge');
 
 
 	frontTrees = game.add.group();
