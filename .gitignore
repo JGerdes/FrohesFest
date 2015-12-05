@@ -1,0 +1,14 @@
+*/.DS_Store
+*/Thumbs.db
+
+*.sublime-project
+*.sublime-workspace
+/nbproject
+
+/node_modules
+
+/build
+/*.min.js
+/*.min.css
+/*.min.js.map
+/sftpCache.json
