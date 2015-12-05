@@ -2,7 +2,9 @@
 
 var game = new Phaser.Game(1280, 720, Phaser.CANVAS, '', { preload: preload, create: create, update: update });
 
-var mountainRow1, mountainRow2, frontTrees, sledge;
+var mountainRow1, mountainRow2, frontTrees, 
+	sledge,
+	sections;
 
 function preload() {
 	game.load.image('background_light', 'assets/graphics/background_light.png');
@@ -14,11 +16,11 @@ function preload() {
 }
 
 function create() {
-	game.world.setBounds(-0, 0, 5000, 720);
+	game.world.setBounds(-0, 0, 10000, 720);
 
 	game.physics.startSystem(Phaser.Physics.P2JS);
-	game.physics.p2.gravity.y = 100;
-    game.physics.p2.restitution = 0.1;
+	game.physics.p2.gravity.y = 200;
+    game.physics.p2.restitution = 0.01;
     game.physics.p2.friction = 0.2;
 
 
@@ -43,12 +45,35 @@ function create() {
 
 	}
 
-	var seg = new Segment(game, {
-		'x': [ 0, 200, 600],
-		'y': [ 440, 210, 250]
-	}).create();
+	sections = [];
 
-	
+	sections.push(new Segment(game, {
+			'x': [ 0, 200, 600, 900],
+			'y': [ 440, 210, 250, 90]
+		}).create()
+	);
+	sections.push(new Segment(game, {
+			'x': [ 900, 1200, 1400],
+			'y': [ 90, 10, 100]
+		}).create()
+	);
+	sections.push(new Segment(game, {
+			'x': [ 1400, 2000, 2500, 3000],
+			'y': [ 100, 500, 250, 100]
+		}).create()
+	);
+	sections.push(new Segment(game, {
+			'x': [ 3000, 3500, 4000, 4500, 5000, 5500],
+			'y': [ 100, 200, 100, 200, 100, 200]
+		}).create()
+	);
+	sections.push(new Segment(game, {
+			'x': [ 5500, 6000, 7500, 8000],
+			'y': [ 200, 300, 50, 300]
+		}).create()
+	);
+
+
 	sledge = game.add.sprite(10, 100, 'sledge');
 
 
