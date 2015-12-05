@@ -16,9 +16,10 @@ function preload() {
 }
 
 function create() {
-	game.world.setBounds(-0, 0, 10000, 720);
+	game.world.setBounds(0, 0, 10000, 720);
 
 	game.physics.startSystem(Phaser.Physics.P2JS);
+	game.physics.p2.setBoundsToWorld(true, true, false, true);
 	game.physics.p2.gravity.y = 200;
     game.physics.p2.restitution = 0.01;
     game.physics.p2.friction = 0.2;
