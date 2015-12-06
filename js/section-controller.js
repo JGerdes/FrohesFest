@@ -48,6 +48,6 @@ SectionController.prototype.getNextSection = function(layers){
 		new BackgroundLayer(layers.background2, ['mountain01'], 256, 512, 640, 0.9),
 		new TiledLayer(layers.tiledBackground, 'forest', game.world.height, 0.85),
 		new MiddlegroundLayer(layers.middleground, ['tree02'], 256, 1024, activeSegments, 0),
-		new ForegroundLayer(layers.foreground, ['tree01'], 512, 2048, game.world.height, -0.9)
+		new ForegroundLayer(layers.foreground, ['tree01'], 512, 2048, game.world.height, -0.9, 128)
 	);
 };

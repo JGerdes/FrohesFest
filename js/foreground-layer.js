@@ -1,4 +1,4 @@
-function ForegroundLayer(group, images, minMargin, maxMargin, y, scrollSpeed){
+function ForegroundLayer(group, images, minMargin, maxMargin, y, scrollSpeed, yVariation){
 	this.images = images;
 	this.minMargin = minMargin;
 	this.randMargin = maxMargin - minMargin;
@@ -10,6 +10,7 @@ function ForegroundLayer(group, images, minMargin, maxMargin, y, scrollSpeed){
 	this.scrollSpeedInv = 1 - scrollSpeed;
 	this.sprites = [];
 	this.lastGenerated = -512;
+	this.randY = yVariation;
 	
 }
 
@@ -35,7 +36,8 @@ ForegroundLayer.prototype.generateSprite = function(){
 	var image = this.images[Math.floor(Math.random()*this.images.length)];
 	this.lastGenerated += this.minMargin + Math.random()*this.randMargin;
 	var temp = this.group.create(this.lastGenerated, this.y, image);
-	temp.position.y -= temp.height; 
+	temp.position.y -= temp.height;
+	temp.position.y += Math.random() * this.randY; 
 	this.sprites.push(temp);
 }
 
@@ -46,10 +48,4 @@ ForegroundLayer.prototype.destroy = function(){
 	}
 }
 
-ForegroundLayer.prototype.swapGroup = function(newGroup){
-
-	newGroup.addMultiple(this.sprites);
-	this.group.removeAll();
-	this.group = newGroup;
-}
 

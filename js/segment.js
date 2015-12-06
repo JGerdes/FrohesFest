@@ -19,9 +19,10 @@ function Segment(game, points){
 Segment.STEPS_RENDER = 20;
 Segment.STEPS_PHYSICS = 4;
 
-Segment.prototype.create = function(){
+Segment.prototype.create = function(group){
 	this.bitmapData = this.game.add.bitmapData(this.size.x, this.size.y);
-	this.image = this.bitmapData.addToWorld();
+	this.image = new Phaser.Image(this.game, 0, 0, this.bitmapData);
+	group.add(this.image);
 
 	this.bitmapData.ctx.fillStyle = '#f4f4f4'; //'rgba(0, 128, 128, 0.5)'; //
 	this.bitmapData.ctx.beginPath();
