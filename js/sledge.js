@@ -20,7 +20,7 @@ Sledge.prototype.create = function(){
    		]  
 	);
 
-}
+};
 
 Sledge.prototype.update = function() {
 	if(this.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)

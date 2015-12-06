@@ -10,11 +10,13 @@ function MiddlegroundLayer(group, images, minMargin, maxMargin, activeSegments, 
 	this.scrollSpeedInv = 1 - scrollSpeed;
 	this.sprites = [];
 	this.lastGenerated = -512;
+	
+}
 
+MiddlegroundLayer.prototype.create = function(){
 	while(this.camera.view.x * this.scrollSpeedInv + this.camera.view.width - this.minMargin > this.lastGenerated){
 		this.generateSprite();
 	}
-	
 }
 	
 

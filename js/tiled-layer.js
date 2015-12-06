@@ -5,8 +5,15 @@ function TiledLayer(group, image, y, scrollSpeed){
 	this.y = y;
 	this.scrollSpeed = scrollSpeed;
 	this.width = this.game.camera.view.width;
-	this.part1 = this.game.add.tileSprite(0, this.y, this.width, this.game.cache.getImage(image).height, image);
-	this.part2 = this.game.add.tileSprite(this.width, this.y, this.width, this.game.cache.getImage(image).height, image);
+	this.part1 = null;
+	this.part2 = null;
+}
+
+TiledLayer.prototype.create = function(){
+	this.part1 = new Phaser.TileSprite(this.game, 0, this.y, this.width, this.game.cache.getImage(this.image).height, this.image);
+	this.part2 = new Phaser.TileSprite(this.game, this.width, this.y, this.width, this.game.cache.getImage(this.image).height, this.image);
+	this.group.add(this.part1);
+	this.group.add(this.part2);
 	this.part1.offset = 0;
 	this.part2.offset = this.width;
 	this.part1.anchor.setTo(0, 1);

@@ -10,11 +10,13 @@ function ForegroundLayer(group, images, minMargin, maxMargin, y, scrollSpeed){
 	this.scrollSpeedInv = 1 - scrollSpeed;
 	this.sprites = [];
 	this.lastGenerated = -512;
+	
+}
 
+ForegroundLayer.prototype.create = function() {
 	while(this.camera.view.x * this.scrollSpeedInv + this.camera.view.width - this.minMargin > this.lastGenerated){
 		this.generateSprite();
 	}
-	
 }
 	
 
@@ -45,7 +47,7 @@ ForegroundLayer.prototype.destroy = function(){
 }
 
 ForegroundLayer.prototype.swapGroup = function(newGroup){
-	
+
 	newGroup.addMultiple(this.sprites);
 	this.group.removeAll();
 	this.group = newGroup;
