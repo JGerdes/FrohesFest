@@ -6,12 +6,10 @@ var layers = {},
 	background1,
 	background2,
 	tiledBackground,
+	middleground,
 	foreground;
 
-var mountainRow2, frontTrees, backTrees,
-	sledge,
-	forest1,
-	forest2,
+var	sledge,
 	segments,
 	segmentGroup,
 	activeSegments;
@@ -32,7 +30,7 @@ function create() {
 
 	game.physics.startSystem(Phaser.Physics.P2JS);
 	game.physics.p2.setBoundsToWorld(true, true, false, true);
-	game.physics.p2.gravity.y = 200;
+	game.physics.p2.gravity.y = 400;
     game.physics.p2.restitution = 0.01;
     game.physics.p2.friction = 0.2;
 
@@ -49,6 +47,8 @@ function create() {
 	background2 = new BackgroundLayer(layers.background2, ['mountain01'], 256, 512, 640, 0.9);
 
 	tiledBackground = new TiledLayer(layers.tiledBackground, 'forest', game.world.height, 0.85);
+
+	layers.middleground = game.add.group();
 
 
 	segments = [];
@@ -95,20 +95,7 @@ function create() {
 		})
 	);
 
-	backTrees = game.add.group();
-	start = 0;
-	for(var i=0; i<40; i++){
-		start += 256 + Math.random()*512;
-		var y = game.world.height;
-		for(var j=0; j<segments.length; ++j){
-			if(segments[j].containsX(start)){
-				y = segments[j].getYFor(start) + 64;
-				break;
-			}
-		}
-		backTrees.create(start, y, 'tree02').anchor.setTo(0.5, 1);
-	}
-
+	middleground = new MiddlegroundLayer(layers.middleground, ['tree02'], 256, 1024, activeSegments, 0);
 
 	segmentGroup = game.add.group();
 	for(var i=0; i<3; ++i){
@@ -148,6 +135,7 @@ function update() {
 	background1.update();
 	background2.update();
 	tiledBackground.update();
+	middleground.update();
 	foreground.update();
 
 	if(activeSegments.length > 0 && !activeSegments[0].isVisible()){
