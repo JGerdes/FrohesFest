@@ -4,10 +4,13 @@ var game = new Phaser.Game(1280, 720, Phaser.CANVAS, '', { preload: preload, cre
 
 var mountainRow1, mountainRow2, frontTrees, 
 	sledge,
+	forest1,
+	forest2,
 	segments;
 
 function preload() {
 	game.load.image('background_light', 'assets/graphics/background_light.png');
+	game.load.image('forest', 'assets/graphics/forest.png');
 	game.load.image('tree01', 'assets/graphics/tree01.png');
 	game.load.image('mountain01', 'assets/graphics/mountain01.png');
 	game.load.image('mountain02', 'assets/graphics/mountain02.png');
@@ -27,6 +30,7 @@ function create() {
 
 	game.add.image(0, 0, 'background_light').fixedToCamera = true;
 
+
 	mountainRow1 = game.add.group();
 	start = -512;
 	for(var i=0; i<30; i++){
@@ -45,6 +49,11 @@ function create() {
 		temp.position.y -= temp.height; 
 
 	}
+
+	forest1 = game.add.tileSprite(0, 720 - game.cache.getImage('forest').height, 1280, game.cache.getImage('forest').height, 'forest');
+	forest2 = game.add.tileSprite(1280, 720 - game.cache.getImage('forest').height, 1280, game.cache.getImage('forest').height, 'forest');
+	forest1.offset = 0;
+	forest2.offset = 1280;
 
 	segments = [];
 
@@ -108,13 +117,26 @@ function update() {
 		|| game.input.pointer1.isDown){
 		sledge.body.moveRight(500);
 	}
-	frontTrees.x = game.camera.x * - 0.8;
-	mountainRow1.x = game.camera.x * 0.9;
-	mountainRow2.x = game.camera.x * 0.8;
+	frontTrees.x = game.camera.x * - 0.9;
+	mountainRow1.x = game.camera.x * 0.95;
+	mountainRow2.x = game.camera.x * 0.9;
+
+	forest1.x = game.camera.x * 0.85 + forest1.offset;
+	forest2.x = game.camera.x * 0.85 + forest2.offset;
 
 	if(segments.length > 0 && !segments[0].isVisible()){
 		segments.shift().destroy();
 		console.log("removed section. left:", segments.length);
+	}
+
+	updateScrollBackground(forest1);
+	updateScrollBackground(forest2);
+}
+
+
+function updateScrollBackground(background) {
+	if (game.camera.x - background.x > 1280){
+		background.offset += 1280 * 2;
 	}
 }
 
