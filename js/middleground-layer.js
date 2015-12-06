@@ -36,7 +36,7 @@ MiddlegroundLayer.prototype.generateSprite = function(){
 	var y = this.game.world.height;
 	for(var i=0; i<activeSegments.length; ++i){
 		if(activeSegments[i].containsX(this.lastGenerated)){
-			y = activeSegments[i].getYFor(this.lastGenerated) + 64;
+			y = activeSegments[i].getYFor(this.lastGenerated) + 192;
 			break;
 		}
 	}
