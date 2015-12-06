@@ -4,7 +4,8 @@ var game = new Phaser.Game(1280, 720, Phaser.CANVAS, '', { preload: preload, cre
 
 var layers = {},
 	background1,
-	background2;
+	background2,
+	tiledBackground;
 
 var mountainRow2, frontTrees, backTrees,
 	sledge,
@@ -40,15 +41,13 @@ function create() {
 
 	layers.background1 = game.add.group();
 	layers.background2 = game.add.group();
+	layers.tiledBackground = game.add.group();
+
+
 	background1 = new BackgroundLayer(layers.background1, ['mountain02', 'mountain03'], 256, 512, 640, 0.95);
 	background2 = new BackgroundLayer(layers.background2, ['mountain01'], 256, 512, 640, 0.9);
 
-	
-
-	forest1 = game.add.tileSprite(0, 720 - game.cache.getImage('forest').height, 1280, game.cache.getImage('forest').height, 'forest');
-	forest2 = game.add.tileSprite(1280, 720 - game.cache.getImage('forest').height, 1280, game.cache.getImage('forest').height, 'forest');
-	forest1.offset = 0;
-	forest2.offset = 1280;
+	tiledBackground = new TiledLayer(layers.tiledBackground, 'forest', game.world.height, 0.85);
 
 
 	segments = [];
@@ -153,9 +152,7 @@ function update() {
 	//backTrees.x = game.camera.x * 0.2;
 	background1.update();
 	background2.update();
-
-	forest1.x = game.camera.x * 0.85 + forest1.offset;
-	forest2.x = game.camera.x * 0.85 + forest2.offset;
+	tiledBackground.update();
 
 	if(activeSegments.length > 0 && !activeSegments[0].isVisible()){
 		activeSegments.shift().destroy();
@@ -166,16 +163,11 @@ function update() {
 		}
 	}
 
-	updateScrollBackground(forest1);
-	updateScrollBackground(forest2);
+	
 }
 
 
-function updateScrollBackground(background) {
-	if (game.camera.x - background.x > 1280){
-		background.offset += 1280 * 2;
-	}
-}
+
 
 
 
