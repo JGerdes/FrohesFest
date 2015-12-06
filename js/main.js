@@ -7,6 +7,7 @@ var mountainRow1, mountainRow2, frontTrees, backTrees,
 	forest1,
 	forest2,
 	segments,
+	segmentGroup,
 	activeSegments;
 
 function preload() {
@@ -21,7 +22,7 @@ function preload() {
 }
 
 function create() {
-	game.world.setBounds(0, 0, 10000, 720);
+	game.world.setBounds(0, 0, 18500, 720);
 
 	game.physics.startSystem(Phaser.Physics.P2JS);
 	game.physics.p2.setBoundsToWorld(true, true, false, true);
@@ -86,6 +87,21 @@ function create() {
 			'y': [ 200, 300, 50, 300]
 		})
 	);
+	segments.push(new Segment(game, {
+			'x': [ 8000, 9500, 10500, 12500],
+			'y': [ 300, 500, 600, 10]
+		})
+	);
+	segments.push(new Segment(game, {
+			'x': [ 12500, 15000],
+			'y': [ 10, 100]
+		})
+	);
+	segments.push(new Segment(game, {
+			'x': [ 15000, 15500, 16000, 16500, 17000, 17500, 18000, 18500],
+			'y': [ 100, 200, 100, 200, 100, 200, 100, 200]
+		})
+	);
 
 	backTrees = game.add.group();
 	start = 0;
@@ -102,8 +118,9 @@ function create() {
 	}
 
 
-	for(var i=0; i<5; ++i){
-		activeSegments.push(segments.shift().create());
+	segmentGroup = game.add.group();
+	for(var i=0; i<3; ++i){
+		activeSegments.push(segments.shift().create(segmentGroup));
 	}
 
 
@@ -152,7 +169,7 @@ function update() {
 		activeSegments.shift().destroy();
 		console.log("removed section. left:", activeSegments.length);
 		if(segments.length > 0){
-			activeSegments.push(segments.shift().create());
+			activeSegments.push(segments.shift().create(segmentGroup));
 			console.log("added new section. now:", activeSegments.length, "left to create:",segments.length);
 		}
 	}
