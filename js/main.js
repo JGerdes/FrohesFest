@@ -2,7 +2,11 @@
 
 var game = new Phaser.Game(1280, 720, Phaser.CANVAS, '', { preload: preload, create: create, update: update });
 
-var mountainRow1, mountainRow2, frontTrees, backTrees,
+var layers = {},
+	background1,
+	background2;
+
+var mountainRow2, frontTrees, backTrees,
 	sledge,
 	forest1,
 	forest2,
@@ -34,24 +38,12 @@ function create() {
 	game.add.image(0, 0, 'background_light').fixedToCamera = true;
 
 
-	mountainRow1 = game.add.group();
-	start = -512;
-	for(var i=0; i<30; i++){
-		start += 256 + Math.random()*192;
-		var mountid = Math.floor(Math.random()* 2) + 2;
-		var temp = mountainRow1.create(start, 640, 'mountain0'+ mountid);
-		temp.position.y -= temp.height; 
-		temp.alpha = 0.6;
+	layers.background1 = game.add.group();
+	layers.background2 = game.add.group();
+	background1 = new BackgroundLayer(layers.background1, ['mountain02', 'mountain03'], 256, 512, 640, 0.95);
+	background2 = new BackgroundLayer(layers.background2, ['mountain01'], 256, 512, 640, 0.9);
 
-	}
-	mountainRow2 = game.add.group();
-	start = -512;
-	for(var i=0; i<30; i++){
-		start += 256 + Math.random()*192;
-		var temp = mountainRow2.create(start, 640, 'mountain01');
-		temp.position.y -= temp.height; 
-
-	}
+	
 
 	forest1 = game.add.tileSprite(0, 720 - game.cache.getImage('forest').height, 1280, game.cache.getImage('forest').height, 'forest');
 	forest2 = game.add.tileSprite(1280, 720 - game.cache.getImage('forest').height, 1280, game.cache.getImage('forest').height, 'forest');
@@ -159,8 +151,8 @@ function update() {
 	}
 	frontTrees.x = game.camera.x * - 0.9;
 	//backTrees.x = game.camera.x * 0.2;
-	mountainRow1.x = game.camera.x * 0.95;
-	mountainRow2.x = game.camera.x * 0.9;
+	background1.update();
+	background2.update();
 
 	forest1.x = game.camera.x * 0.85 + forest1.offset;
 	forest2.x = game.camera.x * 0.85 + forest2.offset;
