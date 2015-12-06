@@ -1,4 +1,4 @@
-function BackgroundLayer(group, images, minMargin, maxMargin, y, scrollSpeed){
+function ForegroundLayer(group, images, minMargin, maxMargin, y, scrollSpeed){
 	this.images = images;
 	this.minMargin = minMargin;
 	this.randMargin = maxMargin - minMargin;
@@ -18,7 +18,7 @@ function BackgroundLayer(group, images, minMargin, maxMargin, y, scrollSpeed){
 }
 	
 
-BackgroundLayer.prototype.update = function(){
+ForegroundLayer.prototype.update = function(){
 	this.group.x = this.game.camera.x * this.scrollSpeed;
 
 	if(this.camera.view.x * this.scrollSpeedInv + this.camera.view.width - this.minMargin > this.lastGenerated){
@@ -29,7 +29,7 @@ BackgroundLayer.prototype.update = function(){
 	}
 }
 
-BackgroundLayer.prototype.generateSprite = function(){
+ForegroundLayer.prototype.generateSprite = function(){
 	var image = this.images[Math.floor(Math.random()*this.images.length)];
 	this.lastGenerated += this.minMargin + Math.random()*this.randMargin;
 	var temp = this.group.create(this.lastGenerated, this.y, image);
@@ -37,10 +37,17 @@ BackgroundLayer.prototype.generateSprite = function(){
 	this.sprites.push(temp);
 }
 
-BackgroundLayer.prototype.destroy = function(){
+ForegroundLayer.prototype.destroy = function(){
 	this.group.removeAll();
 	for(var i = 0; i < this.sprites.length; ++i){
 		this.sprites[i].destroy();
 	}
+}
+
+ForegroundLayer.prototype.swapGroup = function(newGroup){
+	
+	newGroup.addMultiple(this.sprites);
+	this.group.removeAll();
+	this.group = newGroup;
 }
 

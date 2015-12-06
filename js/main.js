@@ -5,7 +5,8 @@ var game = new Phaser.Game(1280, 720, Phaser.CANVAS, '', { preload: preload, cre
 var layers = {},
 	background1,
 	background2,
-	tiledBackground;
+	tiledBackground,
+	foreground;
 
 var mountainRow2, frontTrees, backTrees,
 	sledge,
@@ -117,12 +118,8 @@ function create() {
 
 	sledge = game.add.sprite(10, 100, 'sledge');
 
-	frontTrees = game.add.group();
-	start = 0;
-	for(var i=0; i<20; i++){
-		start += 512 + Math.random()*1024;
-		frontTrees.create(start, game.world.height - 256, 'tree01');
-	}
+	layers.foreground = game.add.group();
+	foreground = new ForegroundLayer(layers.foreground, ['tree01'], 512, 2048, game.world.height, -0.9);
 	
 
 
@@ -148,11 +145,10 @@ function update() {
 		|| game.input.pointer1.isDown){
 		sledge.body.moveRight(500);
 	}
-	frontTrees.x = game.camera.x * - 0.9;
-	//backTrees.x = game.camera.x * 0.2;
 	background1.update();
 	background2.update();
 	tiledBackground.update();
+	foreground.update();
 
 	if(activeSegments.length > 0 && !activeSegments[0].isVisible()){
 		activeSegments.shift().destroy();
