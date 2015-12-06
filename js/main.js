@@ -7,9 +7,9 @@ var layers = {},
 	background2,
 	tiledBackground,
 	middleground,
-	foreground;
+	foreground,
 
-var	sledge,
+	sledge,
 	segments,
 	segmentGroup,
 	activeSegments;
@@ -37,7 +37,6 @@ function create() {
 
 	game.add.image(0, 0, 'background_light').fixedToCamera = true;
 
-
 	layers.background1 = game.add.group();
 	layers.background2 = game.add.group();
 	layers.tiledBackground = game.add.group();
@@ -49,7 +48,6 @@ function create() {
 	tiledBackground = new TiledLayer(layers.tiledBackground, 'forest', game.world.height, 0.85);
 
 	layers.middleground = game.add.group();
-
 
 	segments = [];
 	activeSegments = [];
@@ -102,36 +100,18 @@ function create() {
 		activeSegments.push(segments.shift().create(segmentGroup));
 	}
 
-
-	sledge = game.add.sprite(10, 100, 'sledge');
+	sledge = new Sledge(game);
+	sledge.create();
 
 	layers.foreground = game.add.group();
 	foreground = new ForegroundLayer(layers.foreground, ['tree01'], 512, 2048, game.world.height, -0.9);
 	
-
-
-	game.camera.follow(sledge);
-
-
-	
-
-	game.physics.p2.enable(sledge, false);
-	sledge.body.clearShapes();
-	sledge.body.addPolygon( {} ,   [[0,0]  ,  [185/1.5, 0]  ,  [185/1.5, 90/1.5] , [175/1.5, 100/1.5], [142/1.5, 118/1.5]  ,  [0, 118/1.5]]  );
-
-	
-
-	speed = 0;
-
-
 	 
 }
 
 function update() {
-	if(game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)
-		|| game.input.pointer1.isDown){
-		sledge.body.moveRight(500);
-	}
+	
+	sledge.update();
 	background1.update();
 	background2.update();
 	tiledBackground.update();
@@ -140,10 +120,8 @@ function update() {
 
 	if(activeSegments.length > 0 && !activeSegments[0].isVisible()){
 		activeSegments.shift().destroy();
-		console.log("removed section. left:", activeSegments.length);
 		if(segments.length > 0){
 			activeSegments.push(segments.shift().create(segmentGroup));
-			console.log("added new section. now:", activeSegments.length, "left to create:",segments.length);
 		}
 	}
 

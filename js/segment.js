@@ -20,7 +20,6 @@ Segment.STEPS_RENDER = 20;
 Segment.STEPS_PHYSICS = 4;
 
 Segment.prototype.create = function(){
-	console.log(this);
 	this.bitmapData = this.game.add.bitmapData(this.size.x, this.size.y);
 	this.image = this.bitmapData.addToWorld();
 
