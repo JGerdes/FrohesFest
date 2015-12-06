@@ -89,7 +89,7 @@ function create() {
 
 	frontTrees = game.add.group();
 	start = 0;
-	for(var i=0; i<10; i++){
+	for(var i=0; i<20; i++){
 		start += 512 + Math.random()*1024;
 		frontTrees.create(start, game.world.height - 256, 'tree01');
 	}
