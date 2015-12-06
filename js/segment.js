@@ -24,7 +24,7 @@ Segment.prototype.create = function(){
 	this.bitmapData = this.game.add.bitmapData(this.size.x, this.size.y);
 	this.image = this.bitmapData.addToWorld();
 
-	this.bitmapData.ctx.fillStyle = '#f4f4f4'; //'rgba(0, 128, 128, 0.5)';
+	this.bitmapData.ctx.fillStyle = '#f4f4f4'; //'rgba(0, 128, 128, 0.5)'; //
 	this.bitmapData.ctx.beginPath();
 	this.bitmapData.ctx.moveTo(0, this.game.world.height);
 
@@ -73,4 +73,17 @@ Segment.prototype.destroy = function(){
 
 Segment.prototype.isVisible = function(){
 	return this.game.camera.view.x < this.lastPoint.x;
-}
+};
+
+Segment.prototype.containsX = function(x){
+	var contains = this.startX <= x && x <= this.lastPoint.x;
+	return contains;
+};
+
+Segment.prototype.getYFor = function(x){
+	//FIXME: sometimes this doesn't seem correct
+	var index = (x - this.startX)  / this.size.x;
+	var y = this.game.math.catmullRomInterpolation(this.points.y, index);
+	//console.log("get y for "+ x + "in "+ this.startX + " | " + this.lastPoint.x + " is "+ index);
+	return this.game.world.height - y;
+};

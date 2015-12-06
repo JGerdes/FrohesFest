@@ -2,16 +2,18 @@
 
 var game = new Phaser.Game(1280, 720, Phaser.CANVAS, '', { preload: preload, create: create, update: update });
 
-var mountainRow1, mountainRow2, frontTrees, 
+var mountainRow1, mountainRow2, frontTrees, backTrees,
 	sledge,
 	forest1,
 	forest2,
-	segments;
+	segments,
+	activeSegments;
 
 function preload() {
 	game.load.image('background_light', 'assets/graphics/background_light.png');
 	game.load.image('forest', 'assets/graphics/forest.png');
 	game.load.image('tree01', 'assets/graphics/tree01.png');
+	game.load.image('tree02', 'assets/graphics/tree02.png');
 	game.load.image('mountain01', 'assets/graphics/mountain01.png');
 	game.load.image('mountain02', 'assets/graphics/mountain02.png');
 	game.load.image('mountain03', 'assets/graphics/mountain03.png');
@@ -55,37 +57,57 @@ function create() {
 	forest1.offset = 0;
 	forest2.offset = 1280;
 
+
 	segments = [];
+	activeSegments = [];
 
 	segments.push(new Segment(game, {
 			'x': [ 0, 200, 600, 900],
 			'y': [ 440, 210, 250, 90]
-		}).create()
+		})
 	);
 	segments.push(new Segment(game, {
 			'x': [ 900, 1200, 1400],
 			'y': [ 90, 10, 100]
-		}).create()
+		})
 	);
 	segments.push(new Segment(game, {
 			'x': [ 1400, 2000, 2500, 3000],
 			'y': [ 100, 500, 250, 100]
-		}).create()
+		})
 	);
 	segments.push(new Segment(game, {
 			'x': [ 3000, 3500, 4000, 4500, 5000, 5500],
 			'y': [ 100, 200, 100, 200, 100, 200]
-		}).create()
+		})
 	);
 	segments.push(new Segment(game, {
 			'x': [ 5500, 6000, 7500, 8000],
 			'y': [ 200, 300, 50, 300]
-		}).create()
+		})
 	);
+
+	backTrees = game.add.group();
+	start = 0;
+	for(var i=0; i<40; i++){
+		start += 256 + Math.random()*512;
+		var y = game.world.height;
+		for(var j=0; j<segments.length; ++j){
+			if(segments[j].containsX(start)){
+				y = segments[j].getYFor(start) + 64;
+				break;
+			}
+		}
+		backTrees.create(start, y, 'tree02').anchor.setTo(0.5, 1);
+	}
+
+
+	for(var i=0; i<5; ++i){
+		activeSegments.push(segments.shift().create());
+	}
 
 
 	sledge = game.add.sprite(10, 100, 'sledge');
-
 
 	frontTrees = game.add.group();
 	start = 0;
@@ -93,6 +115,7 @@ function create() {
 		start += 512 + Math.random()*1024;
 		frontTrees.create(start, game.world.height - 256, 'tree01');
 	}
+	
 
 
 	game.camera.follow(sledge);
@@ -118,15 +141,20 @@ function update() {
 		sledge.body.moveRight(500);
 	}
 	frontTrees.x = game.camera.x * - 0.9;
+	//backTrees.x = game.camera.x * 0.2;
 	mountainRow1.x = game.camera.x * 0.95;
 	mountainRow2.x = game.camera.x * 0.9;
 
 	forest1.x = game.camera.x * 0.85 + forest1.offset;
 	forest2.x = game.camera.x * 0.85 + forest2.offset;
 
-	if(segments.length > 0 && !segments[0].isVisible()){
-		segments.shift().destroy();
-		console.log("removed section. left:", segments.length);
+	if(activeSegments.length > 0 && !activeSegments[0].isVisible()){
+		activeSegments.shift().destroy();
+		console.log("removed section. left:", activeSegments.length);
+		if(segments.length > 0){
+			activeSegments.push(segments.shift().create());
+			console.log("added new section. now:", activeSegments.length, "left to create:",segments.length);
+		}
 	}
 
 	updateScrollBackground(forest1);
