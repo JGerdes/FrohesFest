@@ -12,7 +12,7 @@ function Sledge(game, collisionGroups) {
 }
 
 Sledge.prototype.create = function(){
-	this.sprite = game.add.sprite(80, 100, 'sledge');
+	this.sprite = game.add.sprite(100, 100, 'sledge');
 	this.game.camera.follow(this.sprite);
 	this.game.physics.p2.enable(this.sprite, false);
 	this.sprite.body.clearShapes();
@@ -41,12 +41,30 @@ Sledge.prototype.create = function(){
 	   		[0, 27]
    		]  
 	);
-	this.head.body.mass = 0.1;
+	this.head.body.mass = 0.2;
 
 
-	this.constraint = this.game.physics.p2.createRevoluteConstraint(this.sprite, [ -30, -50 ], this.head, [ 0, 0 ]);
-	this.constraint.setLimits(-0.2, 0.2);
-	this.constraint.setStiffness(80);
+	var constraint = this.game.physics.p2.createRevoluteConstraint(this.sprite, [ -30, -50 ], this.head, [ 0, 0 ]);
+	constraint.setLimits(-0.2, 0.2);
+	constraint.setStiffness(80);
+
+
+
+	this.hat = game.add.sprite(this.head.x - 10, this.head.y - 5, 'santa_hat');
+	this.game.physics.p2.enable(this.hat, false);
+	this.hat.body.clearShapes();
+	this.hat.body.addPolygon( {} ,
+		[
+	   		[0,0],
+	   		[10, 0],  
+	   		[10,13],  
+	   		[0, 13]
+   		]  
+	);
+	this.hat.body.mass = 0.05;
+
+	constraint = this.game.physics.p2.createRevoluteConstraint(this.head, [ 0, 0 ], this.hat, [ 0, 0 ]);
+	constraint.setStiffness(20);
 };
 
 Sledge.prototype.update = function() {
