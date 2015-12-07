@@ -2,6 +2,11 @@ function Sledge(game) {
 	this.game = game;
 	this.input = game.input;
 	this.sprite = null;
+	this.acceleration = 0;
+	this.maxAcceleration = 50;
+	this.velocity = 0;
+	this.maxVelo = 500;
+	this.naturalVelo = 0;
 }
 
 Sledge.prototype.create = function(){
@@ -25,6 +30,26 @@ Sledge.prototype.create = function(){
 Sledge.prototype.update = function() {
 	if(this.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)
 		|| this.input.pointer1.isDown){
-		this.sprite.body.moveRight(500);
+		if(this.acceleration < this.maxAcceleration){
+			this.acceleration += 2;	
+		}else{
+			this.acceleration = this.maxAcceleration;
+		}
+		this.sprite.body.velocity.x -= this.velocity;
+		this.sprite.body.velocity.x += (this.naturalVelo - this.sprite.body.velocity.x);
+		this.velocity = Math.min(this.maxVelo,  this.velocity + this.acceleration);
+		this.naturalVelo = this.sprite.body.velocity.x;
+		this.sprite.body.velocity.x += this.velocity;
+
+	}else{
+		if(this.acceleration > 0){
+			this.acceleration -= 1;
+		}else{
+			this.acceleration = 0;
+		}
 	}
+
+	
+
+	
 };
