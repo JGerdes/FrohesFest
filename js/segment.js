@@ -19,7 +19,7 @@ function Segment(game, points){
 Segment.STEPS_RENDER = 20;
 Segment.STEPS_PHYSICS = 4;
 
-Segment.prototype.create = function(group){
+Segment.prototype.create = function(group, collisionGroup){
 	this.bitmapData = this.game.add.bitmapData(this.size.x, this.size.y);
 	this.image = new Phaser.Image(this.game, 0, 0, this.bitmapData);
 	group.add(this.image);
@@ -61,6 +61,8 @@ Segment.prototype.create = function(group){
 	physicsShape.push([this.lastPoint.x, this.game.world.height]);
 	this.sprite.body.addPolygon({}, physicsShape);
 	this.sprite.body.static = true;
+	this.sprite.body.setCollisionGroup(collisionGroup.segments);
+	this.sprite.body.collides([collisionGroup.player]);
 
 	return this;
 };

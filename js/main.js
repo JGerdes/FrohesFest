@@ -6,6 +6,7 @@ var layers = {},
 	sledge,
 	segments = [],
 	activeSegments = [],
+	collisionGroups = {},
 	currentSection,
 	sectionController;
 
@@ -18,6 +19,8 @@ function preload() {
 	game.load.image('mountain02', 'assets/graphics/mountain02.png');
 	game.load.image('mountain03', 'assets/graphics/mountain03.png');
 	game.load.image('sledge', 'assets/graphics/sledge.png');
+	game.load.image('santa_head', 'assets/graphics/santa_head.png');
+	game.load.image('santa_hat', 'assets/graphics/santa_hat.png');
 }
 
 function create() {
@@ -28,6 +31,9 @@ function create() {
 	game.physics.p2.gravity.y = 400;
     game.physics.p2.restitution = 0.01;
     game.physics.p2.friction = 0.2;
+
+    collisionGroups.segments = game.physics.p2.createCollisionGroup();
+    collisionGroups.player = game.physics.p2.createCollisionGroup();
 
 
 	game.add.image(0, 0, 'background_light').fixedToCamera = true;
@@ -43,7 +49,7 @@ function create() {
 	layers.track = game.add.group();
 
 	
-	sledge = new Sledge(game);
+	sledge = new Sledge(game, collisionGroups);
 	sledge.create();
 
 	layers.foreground = game.add.group();	
@@ -54,7 +60,7 @@ function create() {
 	currentSection.create();
 	segments = segments.concat(currentSection.segments);
 	for(var i=0; i<3; ++i){
-		activeSegments.push(segments.shift().create(layers.track));
+		activeSegments.push(segments.shift().create(layers.track, collisionGroups));
 	}
 	 
 }
@@ -67,7 +73,7 @@ function update() {
 	if(activeSegments.length > 0 && !activeSegments[0].isVisible()){
 		activeSegments.shift().destroy();
 		if(segments.length > 0){
-			activeSegments.push(segments.shift().create(layers.track));
+			activeSegments.push(segments.shift().create(layers.track, collisionGroups));
 		}
 	}
 

@@ -1,16 +1,18 @@
-function Sledge(game) {
+function Sledge(game, collisionGroups) {
 	this.game = game;
 	this.input = game.input;
 	this.sprite = null;
+	this.collisionGroups= collisionGroups;
 	this.acceleration = 0;
 	this.maxAcceleration = 50;
 	this.velocity = 0;
 	this.maxVelo = 500;
 	this.naturalVelo = 0;
+
 }
 
 Sledge.prototype.create = function(){
-	this.sprite = game.add.sprite(10, 100, 'sledge');
+	this.sprite = game.add.sprite(80, 100, 'sledge');
 	this.game.camera.follow(this.sprite);
 	this.game.physics.p2.enable(this.sprite, false);
 	this.sprite.body.clearShapes();
@@ -25,6 +27,26 @@ Sledge.prototype.create = function(){
    		]  
 	);
 
+	this.sprite.body.setCollisionGroup(this.collisionGroups.player)
+	this.sprite.body.collides([this.collisionGroups.segments]);
+
+	this.head = game.add.sprite(this.sprite.x + 10, this.sprite.y - 20, 'santa_head');
+	this.game.physics.p2.enable(this.head, false);
+	this.head.body.clearShapes();
+	this.head.body.addPolygon( {} ,
+		[
+	   		[0,0],
+	   		[39, 0],  
+	   		[39,27],  
+	   		[0, 27]
+   		]  
+	);
+	this.head.body.mass = 0.1;
+
+
+	this.constraint = this.game.physics.p2.createRevoluteConstraint(this.sprite, [ -30, -50 ], this.head, [ 0, 0 ]);
+	this.constraint.setLimits(-0.2, 0.2);
+	this.constraint.setStiffness(80);
 };
 
 Sledge.prototype.update = function() {
