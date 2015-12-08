@@ -55,7 +55,7 @@ function create() {
 
 	layers.foreground = game.add.group();	
 
-	sectionController = new SectionController({}, game);
+	sectionController = new SectionController(sections, game);
 
 	currentSection = sectionController.getNextSection(layers);
 	currentSection.create();
