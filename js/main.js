@@ -21,6 +21,7 @@ function preload() {
 	game.load.image('sledge', 'assets/graphics/sledge.png');
 	game.load.image('santa_head', 'assets/graphics/santa_head.png');
 	game.load.image('santa_hat', 'assets/graphics/santa_hat.png');
+	game.load.image('particle_snow', 'assets/graphics/particle_snow.png');
 }
 
 function create() {

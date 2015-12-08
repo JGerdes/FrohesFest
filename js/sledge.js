@@ -9,6 +9,7 @@ function Sledge(game, collisionGroups) {
 	this.maxVelo = 500;
 	this.naturalVelo = 0;
 
+
 }
 
 Sledge.prototype.create = function(){
@@ -65,6 +66,10 @@ Sledge.prototype.create = function(){
 
 	constraint = this.game.physics.p2.createRevoluteConstraint(this.head, [ 0, 0 ], this.hat, [ 0, 0 ]);
 	constraint.setStiffness(20);
+
+	this.snowEmitter = this.game.add.emitter(this.sprite.x, this.sprite.y, 200);
+	this.snowEmitter.makeParticles('particle_snow');
+    this.snowEmitter.start(false, 2000, 20);
 };
 
 Sledge.prototype.update = function() {
@@ -89,7 +94,8 @@ Sledge.prototype.update = function() {
 		}
 	}
 
-	
+	this.snowEmitter.x = this.sprite.x - 64;
+	this.snowEmitter.y = this.sprite.y + 32;
 
 	
 };
