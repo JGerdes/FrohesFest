@@ -8,10 +8,13 @@ var layers = {},
 	activeSegments = [],
 	collisionGroups = {},
 	currentSection,
-	sectionController;
+	sectionController,
+	darkerOverlays = [];
 
 function preload() {
 	game.load.image('background_light', 'assets/graphics/background_light.png');
+	game.load.image('background_dark', 'assets/graphics/background_dark.png');
+	game.load.image('foreground_dark', 'assets/graphics/foreground_dark.png');
 	game.load.image('forest', 'assets/graphics/forest.png');
 	game.load.image('tree01', 'assets/graphics/tree01.png');
 	game.load.image('tree02', 'assets/graphics/tree02.png');
@@ -25,6 +28,8 @@ function preload() {
 }
 
 function create() {
+
+
 	game.world.setBounds(0, 0, 18500, 720);
 
 	game.physics.startSystem(Phaser.Physics.P2JS);
@@ -38,6 +43,9 @@ function create() {
 
 
 	game.add.image(0, 0, 'background_light').fixedToCamera = true;
+	var bgdark = game.add.image(0, 0, 'background_dark');
+	bgdark.fixedToCamera = true;
+	darkerOverlays.push(bgdark);
 
 	layers.background1 = game.add.group();
 	layers.background2 = game.add.group();
@@ -63,6 +71,13 @@ function create() {
 	for(var i=0; i<3; ++i){
 		activeSegments.push(segments.shift().create(layers.track, collisionGroups));
 	}
+
+
+	var fg = game.add.image(0, 0, 'foreground_dark');
+	fg.fixedToCamera = true;
+	fg.blendMode = 2;
+	fg.alpha = 0;
+	darkerOverlays.push(fg);
 	 
 }
 
@@ -70,6 +85,8 @@ function update() {
 	
 	sledge.update();
 	currentSection.update();
+	darkerOverlays[0].alpha = game.camera.x / game.world.bounds.width;
+	darkerOverlays[1].alpha = 0.6 * game.camera.x / game.world.bounds.width;
 
 	if(activeSegments.length > 0 && !activeSegments[0].isVisible()){
 		activeSegments.shift().destroy();
