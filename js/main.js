@@ -76,7 +76,7 @@ function create() {
 
 	var fg = game.add.image(0, 0, 'foreground_dark');
 	fg.fixedToCamera = true;
-	fg.blendMode = 2;
+	fg.blendMode = Phaser.blendModes.MULTIPLY;
 	fg.alpha = 0;
 	darkerOverlays.push(fg);
 	 
