@@ -4,7 +4,11 @@ function TiledLayer(group, image, y, scrollSpeed){
 	this.image = image;
 	this.y = y;
 	this.scrollSpeed = scrollSpeed;
-	this.width = this.game.camera.view.width;
+	this.imageWidth = this.game.cache.getImage(this.image).width;
+	this.width = this.imageWidth; //this.game.camera.view.width; //this.image.width;
+	while(this.width < this.game.camera.view.width){
+		this.width += this.imageWidth;
+	}
 	this.part1 = null;
 	this.part2 = null;
 }
@@ -32,8 +36,8 @@ TiledLayer.prototype.update = function(){
 }
 
 TiledLayer.prototype.updatePart = function(part) {
-	if (this.game.camera.x - part.x > 1280){
-		part.offset += 1280 * 2;
+	if (this.game.camera.x - part.x > this.width){
+		part.offset += this.width * 2 -1;
 	}
 }
 

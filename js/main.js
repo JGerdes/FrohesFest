@@ -82,6 +82,18 @@ function create() {
 	 
 }
 
+function debug(debug){
+	if(debug){
+		layers.background1.alpha = 0.5;
+		layers.background2.alpha = 0.5;
+		layers.track.alpha = 0.2;
+	}else{
+		layers.background1.alpha = 1;
+		layers.background2.alpha = 1;
+		layers.track.alpha = 1;
+	}
+}
+
 function update() {
 	
 	sledge.update();
