@@ -86,6 +86,7 @@ Segment.prototype.containsX = function(x){
 };
 
 Segment.prototype.getYFor = function(x){
+	x += 50;
 	//FIXME: sometimes this doesn't seem correct
 	var index = (x - this.startX)  / this.size.x;
 	var y = this.game.math.catmullRomInterpolation(this.points.y, index);

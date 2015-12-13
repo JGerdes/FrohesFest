@@ -17,8 +17,11 @@ function preload() {
 	game.load.image('foreground_dark', 'assets/graphics/foreground_dark.png');
 	game.load.image('forest', 'assets/graphics/forest.png');
 	game.load.image('village', 'assets/graphics/village.png');
+	game.load.image('house01', 'assets/graphics/house01.png');
 	game.load.image('tree01', 'assets/graphics/tree01.png');
 	game.load.image('tree02', 'assets/graphics/tree02.png');
+	game.load.image('tree03', 'assets/graphics/tree03.png');
+	game.load.image('tree04', 'assets/graphics/tree04.png');
 	game.load.image('mountain01', 'assets/graphics/mountain01.png');
 	game.load.image('mountain02', 'assets/graphics/mountain02.png');
 	game.load.image('mountain03', 'assets/graphics/mountain03.png');
@@ -80,6 +83,13 @@ function create() {
 	fg.blendMode = Phaser.blendModes.MULTIPLY;
 	fg.alpha = 0;
 	darkerOverlays.push(fg);
+
+
+	layers.middleground.create(40500, game.world.bounds.height - 512, "house01");
+	layers.middleground.create(41000, game.world.bounds.height - 512, "house01");
+	layers.middleground.create(41512, game.world.bounds.height - 512, "house01");
+	layers.middleground.create(42256, game.world.bounds.height - 512, "house01");
+	game.add.image(43000, game.world.bounds.height - 505, 'tree04');
 	 
 }
 

@@ -25,10 +25,14 @@ ForegroundLayer.prototype.update = function(){
 	this.group.x = this.game.camera.x * this.scrollSpeed;
 
 	if(this.camera.view.x * this.scrollSpeedInv + this.camera.view.width - this.minMargin > this.lastGenerated){
-		this.generateSprite();
+		if(game.camera.x < 40000){
+			this.generateSprite();
+		}
 	}
-	if(this.sprites[0].x + this.sprites[0].width < this.camera.view.x * this.scrollSpeedInv){
-		this.group.remove(this.sprites.shift(), true);
+	if(this.sprites.length > 0){
+		if(this.sprites[0].x + this.sprites[0].width < this.camera.view.x * this.scrollSpeedInv){
+			this.group.remove(this.sprites.shift(), true);
+		}
 	}
 }
 

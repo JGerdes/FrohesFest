@@ -44,11 +44,11 @@ var sections = [
 			},
 			{
 				"x": [30000, 30500, 31000, 31500, 32000, 32500, 33000, 33500, 34000, 34500, 35000],
-				"y": [550, 500, 550, 400, 450, 300, 350, 200, 250, 100, 250]
+				"y": [550, 500, 550, 400, 450, 300, 350, 200, 250, 100, 80]
 			},
 			{
 				"x": [35000, 35500, 35800],
-				"y": [250, 20, 30]
+				"y": [80, 20, 30]
 			}
 		],
 		"layer": {
@@ -75,7 +75,8 @@ var sections = [
 				"images": ["tree02"],
 				"minDistance": 256,
 				"maxDistance": 1024,
-				"scrollSpeed": 0
+				"scrollSpeed": 0,
+				"yExtra": 192
 			},
 			"foreground": {
 				"images": ["tree01"],
@@ -119,10 +120,11 @@ var sections = [
 				"scrollSpeed": 0.85
 			},
 			"middleground": {
-				"images": ["tree02"],
+				"images": ["tree03"],
 				"minDistance": 256,
-				"maxDistance": 1024,
-				"scrollSpeed": 0
+				"maxDistance": 256,
+				"scrollSpeed": 0,
+				"yExtra": 64
 			},
 			"foreground": {
 				"images": ["tree01"],

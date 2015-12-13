@@ -54,7 +54,8 @@ SectionController.prototype.getNextSection = function(layers){
 				sec.layer.middleground.minDistance,
 				sec.layer.middleground.maxDistance, 
 				activeSegments, 
-				sec.layer.middleground.scrollSpeed
+				sec.layer.middleground.scrollSpeed,
+				sec.layer.middleground.yExtra
 			),
 		new ForegroundLayer(
 				layers.foreground,

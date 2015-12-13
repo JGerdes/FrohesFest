@@ -1,4 +1,4 @@
-function MiddlegroundLayer(group, images, minMargin, maxMargin, activeSegments, scrollSpeed){
+function MiddlegroundLayer(group, images, minMargin, maxMargin, activeSegments, scrollSpeed, yExtra){
 	this.images = images;
 	this.minMargin = minMargin;
 	this.randMargin = maxMargin - minMargin;
@@ -10,6 +10,7 @@ function MiddlegroundLayer(group, images, minMargin, maxMargin, activeSegments, 
 	this.scrollSpeedInv = 1 - scrollSpeed;
 	this.sprites = [];
 	this.lastGenerated = -512;
+	this.yExtra = yExtra | 0;
 	
 }
 
@@ -40,7 +41,7 @@ MiddlegroundLayer.prototype.generateSprite = function(){
 	var y = this.game.world.height;
 	for(var i=0; i<activeSegments.length; ++i){
 		if(activeSegments[i].containsX(this.lastGenerated)){
-			y = activeSegments[i].getYFor(this.lastGenerated) + 192;
+			y = activeSegments[i].getYFor(this.lastGenerated) + this.yExtra;
 			break;
 		}
 	}
