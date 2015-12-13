@@ -38,6 +38,7 @@ function create() {
 	game.physics.p2.gravity.y = 400;
     game.physics.p2.restitution = 0.01;
     game.physics.p2.friction = 0.2;
+    game.physics.p2.setImpactEvents(true);
 
     collisionGroups.segments = game.physics.p2.createCollisionGroup();
     collisionGroups.player = game.physics.p2.createCollisionGroup();

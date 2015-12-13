@@ -20,7 +20,7 @@ Sledge.prototype.create = function(){
 	this.sprite.body.addPolygon( {} ,
 		[
 	   		[0,0],
-	   		[185/1.5, 0],  
+	   		[160/1.5, 0],  
 	   		[185/1.5, 90/1.5],
 	   		[175/1.5, 100/1.5],
 	   		[142/1.5, 118/1.5],  
@@ -43,6 +43,11 @@ Sledge.prototype.create = function(){
    		]  
 	);
 	this.head.body.mass = 0.2;
+	this.head.body.setCollisionGroup(this.collisionGroups.player)
+	this.head.body.collides([this.collisionGroups.segments]);
+	this.head.body.createGroupCallback(this.collisionGroups.segments, function(){
+		console.log("Autsch!");
+	});
 
 
 	var constraint = this.game.physics.p2.createRevoluteConstraint(this.sprite, [ -30, -50 ], this.head, [ 0, 0 ]);
@@ -63,9 +68,11 @@ Sledge.prototype.create = function(){
    		]  
 	);
 	this.hat.body.mass = 0.05;
+	//this.hat.body.setCollisionGroup(this.collisionGroups.player)
 
-	constraint = this.game.physics.p2.createRevoluteConstraint(this.head, [ 0, 0 ], this.hat, [ 0, 0 ]);
-	constraint.setStiffness(20);
+	constraint = this.game.physics.p2.createRevoluteConstraint(this.head, [ -15, -5 ], this.hat, [ 5, 2 ]);
+	constraint.setStiffness(50);
+	constraint.setLimits(-0.2, 0.2);
 
 	this.snowEmitter = this.game.add.emitter(this.sprite.x, this.sprite.y, 200);
 	this.snowEmitter.makeParticles('particle_snow');
