@@ -31,7 +31,7 @@ function preload() {
 function create() {
 
 
-	game.world.setBounds(0, 0, 41000, 720);
+	game.world.setBounds(0, 0, 44000, 720);
 
 	game.physics.startSystem(Phaser.Physics.P2JS);
 	game.physics.p2.setBoundsToWorld(true, true, false, true);
@@ -70,7 +70,7 @@ function create() {
 	currentSection = sectionController.getNextSection(layers);
 	currentSection.create();
 	segments = segments.concat(currentSection.segments);
-	for(var i=0; i<3; ++i){
+	for(var i=0; i<10; ++i){
 		activeSegments.push(segments.shift().create(layers.track, collisionGroups));
 	}
 
@@ -104,7 +104,7 @@ function update() {
 
 	if(activeSegments.length > 0 && !activeSegments[0].isVisible()){
 		activeSegments.shift().destroy();
-		if(segments.length > 0){
+		if(activeSegments.length < 3 && segments.length > 0){
 			activeSegments.push(segments.shift().create(layers.track, collisionGroups));
 		}
 	}
@@ -115,7 +115,6 @@ function update() {
 			layers.background1.removeAll();
 			layers.background2.removeAll();
 			layers.tiledBackground.removeAll();
-			console.log("get next section", activeSegments, segments, currentSection, nextSection);
 
 			nextSection.middleground.lastGenerated = currentSection.middleground.lastGenerated;
 			nextSection.create();

@@ -6,7 +6,7 @@ function Sledge(game, collisionGroups) {
 	this.acceleration = 0;
 	this.maxAcceleration = 50;
 	this.velocity = 0;
-	this.maxVelo = 500;
+	this.maxVelo = 600;
 	this.naturalVelo = 0;
 
 
@@ -91,11 +91,13 @@ Sledge.prototype.update = function() {
 		}else{
 			this.acceleration = this.maxAcceleration;
 		}
-		this.sprite.body.velocity.x -= this.velocity;
-		this.sprite.body.velocity.x += (this.naturalVelo - this.sprite.body.velocity.x);
-		this.velocity = Math.min(this.maxVelo,  this.velocity + this.acceleration);
-		this.naturalVelo = this.sprite.body.velocity.x;
-		this.sprite.body.velocity.x += this.velocity;
+		if(this.sprite.body.x < 42000){
+			this.sprite.body.velocity.x -= this.velocity;
+			this.sprite.body.velocity.x += (this.naturalVelo - this.sprite.body.velocity.x);
+			this.velocity = Math.min(this.maxVelo,  this.velocity + this.acceleration);
+			this.naturalVelo = this.sprite.body.velocity.x;
+			this.sprite.body.velocity.x += this.velocity;
+		}
 
 	}else{
 		if(this.acceleration > 0){

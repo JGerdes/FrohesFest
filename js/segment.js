@@ -41,6 +41,9 @@ Segment.prototype.create = function(group, collisionGroup){
 	this.bitmapData.ctx.closePath();
 	this.bitmapData.ctx.fill();
 
+/*	this.bitmapData.ctx.fillStyle = 'rgba(0, 128, 128, 0.5)'; //
+	this.bitmapData.ctx.fillRect(0, this.game)*/
+
 	this.image.position.x = this.startX;
 
 	this.sprite = game.add.sprite(0, 0, null);
