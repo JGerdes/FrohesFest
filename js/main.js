@@ -16,6 +16,7 @@ function preload() {
 	game.load.image('background_dark', 'assets/graphics/background_dark.png');
 	game.load.image('foreground_dark', 'assets/graphics/foreground_dark.png');
 	game.load.image('forest', 'assets/graphics/forest.png');
+	game.load.image('village', 'assets/graphics/village.png');
 	game.load.image('tree01', 'assets/graphics/tree01.png');
 	game.load.image('tree02', 'assets/graphics/tree02.png');
 	game.load.image('mountain01', 'assets/graphics/mountain01.png');
@@ -30,7 +31,7 @@ function preload() {
 function create() {
 
 
-	game.world.setBounds(0, 0, 18500, 720);
+	game.world.setBounds(0, 0, 41000, 720);
 
 	game.physics.startSystem(Phaser.Physics.P2JS);
 	game.physics.p2.setBoundsToWorld(true, true, false, true);
@@ -92,6 +93,20 @@ function update() {
 		activeSegments.shift().destroy();
 		if(segments.length > 0){
 			activeSegments.push(segments.shift().create(layers.track, collisionGroups));
+		}
+	}
+
+	if(activeSegments.length < 3 && segments.length == 0){
+		var nextSection = sectionController.getNextSection(layers);
+		if(nextSection != undefined){
+			layers.background1.removeAll();
+			layers.background2.removeAll();
+			layers.tiledBackground.removeAll();
+			layers.middleground.removeAll();
+			console.log("get next section", activeSegments, segments, currentSection, nextSection);
+			currentSection = nextSection;
+			currentSection.create();
+			segments = segments.concat(currentSection.segments);
 		}
 	}
 

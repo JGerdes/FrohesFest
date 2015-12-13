@@ -69,5 +69,60 @@ var sections = [
 				"yVariation": 128
 			}
 		}
+	},
+	{
+		"segments": [
+			{
+				"x": [18000, 18500, 20000, 25000],
+				"y": [80, 200, 400]
+			},
+			{
+				"x": [25000, 26000, 30000],
+				"y": [400, 10, 600]
+			},
+			{
+				"x": [30000, 30500, 31000, 31500, 32000, 32500, 33000, 33500, 34000, 34500, 35000],
+				"y": [600, 500, 550, 400, 450, 300, 350, 200, 250, 100, 250]
+			},
+			{
+				"x": [35000, 40000, 41000],
+				"y": [250, 20, 15]
+			}
+		],
+		"layer": {
+			"background1": {
+				"images": ["mountain02", "mountain03"],
+				"minDistance": 256,
+				"maxDistance": 512,
+				"y": 640,
+				"scrollSpeed": 0.95
+			},
+			"background2": {
+				"images": ["mountain01"],
+				"minDistance": 256,
+				"maxDistance": 512,
+				"y": 640,
+				"scrollSpeed": 0.9
+			},
+			"tiledLayer": {
+				"image": "village",
+				"y": "bottom",
+				"scrollSpeed": 0.85
+			},
+			"middleground": {
+				"images": ["tree02"],
+				"minDistance": 256,
+				"maxDistance": 1024,
+				"scrollSpeed": 0
+			},
+			"foreground": {
+				"images": ["tree01"],
+				"minDistance": 512,
+				"maxDistance": 2048,
+				"y": "bottom",
+				"scrollSpeed": -0.9,
+				"yVariation": 128
+			}
+		}
 	}
 ];

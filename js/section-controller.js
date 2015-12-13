@@ -6,6 +6,9 @@ function SectionController(sections, game){
 
 SectionController.prototype.getNextSection = function(layers){
 	var sec = this.sections[this.currentSectionIndex];
+	if(sec === undefined){
+		return;
+	}
 	this.currentSectionIndex++;
 	var segments = [];
 	for(var i=0; i < sec.segments.length; i++){
