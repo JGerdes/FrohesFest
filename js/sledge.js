@@ -45,9 +45,7 @@ Sledge.prototype.create = function(){
 	this.head.body.mass = 0.2;
 	this.head.body.setCollisionGroup(this.collisionGroups.player)
 	this.head.body.collides([this.collisionGroups.segments]);
-	this.head.body.createGroupCallback(this.collisionGroups.segments, function(){
-		console.log("Autsch!");
-	});
+	this.head.body.createGroupCallback(this.collisionGroups.segments, this.die, this);
 
 
 	var constraint = this.game.physics.p2.createRevoluteConstraint(this.sprite, [ -30, -50 ], this.head, [ 0, 0 ]);
@@ -68,16 +66,22 @@ Sledge.prototype.create = function(){
    		]  
 	);
 	this.hat.body.mass = 0.05;
-	//this.hat.body.setCollisionGroup(this.collisionGroups.player)
+	this.hat.body.setCollisionGroup(this.collisionGroups.player)
+	this.hat.body.collides([this.collisionGroups.segments]);
+	this.hat.body.createGroupCallback(this.collisionGroups.segments, this.die, this);
 
 	constraint = this.game.physics.p2.createRevoluteConstraint(this.head, [ -15, -5 ], this.hat, [ 5, 2 ]);
 	constraint.setStiffness(50);
 	constraint.setLimits(-0.2, 0.2);
 
-	this.snowEmitter = this.game.add.emitter(this.sprite.x, this.sprite.y, 200);
+	/*this.snowEmitter = this.game.add.emitter(this.sprite.x, this.sprite.y, 200);
 	this.snowEmitter.makeParticles('particle_snow');
-    this.snowEmitter.start(false, 2000, 20);
+    this.snowEmitter.start(false, 2000, 20);*/
 };
+
+Sledge.prototype.die = function(){
+	console.log("Autsch!");
+}
 
 Sledge.prototype.update = function() {
 	if(this.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)
@@ -101,8 +105,8 @@ Sledge.prototype.update = function() {
 		}
 	}
 
-	this.snowEmitter.x = this.sprite.x - 64;
-	this.snowEmitter.y = this.sprite.y + 32;
+	/*this.snowEmitter.x = this.sprite.x - 64;
+	this.snowEmitter.y = this.sprite.y + 32;*/
 
 	
 };
