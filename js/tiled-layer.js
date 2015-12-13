@@ -25,6 +25,7 @@ TiledLayer.prototype.create = function(){
 }
 
 
+
 TiledLayer.prototype.update = function(){
 	
 	this.updatePart(this.part1);

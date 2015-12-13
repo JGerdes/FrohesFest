@@ -109,17 +109,20 @@ function update() {
 		}
 	}
 
-	if(activeSegments.length < 3 && segments.length == 0){
-		var nextSection = sectionController.getNextSection(layers);
-		if(nextSection != undefined){
+	if(currentSection.loadNext != undefined){
+		if(sledge.sprite.body.x > currentSection.loadNext ){
+			var nextSection = sectionController.getNextSection(layers);
 			layers.background1.removeAll();
 			layers.background2.removeAll();
 			layers.tiledBackground.removeAll();
-			layers.middleground.removeAll();
 			console.log("get next section", activeSegments, segments, currentSection, nextSection);
+
+			nextSection.middleground.lastGenerated = currentSection.middleground.lastGenerated;
+			nextSection.create();
+			nextSection.tiledBackground.part1.x = currentSection.tiledBackground.part1.x;
+			nextSection.tiledBackground.part2.x = currentSection.tiledBackground.part2.x;
+			segments = segments.concat(nextSection.segments);
 			currentSection = nextSection;
-			currentSection.create();
-			segments = segments.concat(currentSection.segments);
 		}
 	}
 

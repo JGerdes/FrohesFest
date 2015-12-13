@@ -1,4 +1,5 @@
-function Section(segments, background1, background2, tiledBackground, middleground, foreground){
+function Section(segments, loadNext, background1, background2, tiledBackground, middleground, foreground){
+	this.loadNext = loadNext;
 	this.background1 = background1;
 	this.background2 = background2;
 	this.tiledBackground = tiledBackground;

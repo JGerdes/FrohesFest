@@ -44,7 +44,7 @@ Segment.prototype.create = function(group, collisionGroup){
 	this.image.position.x = this.startX;
 
 	this.sprite = game.add.sprite(0, 0, null);
-	this.game.physics.p2.enable(this.sprite, true);
+	this.game.physics.p2.enable(this.sprite, false);
 	this.sprite.body.clearShapes();
 
 	var physicsShape = [];

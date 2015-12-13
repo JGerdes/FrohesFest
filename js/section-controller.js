@@ -25,6 +25,7 @@ SectionController.prototype.getNextSection = function(layers){
 
 	return new Section(
 		segments,
+		sec.loadNext,
 		new BackgroundLayer(
 				layers.background1,
 				sec.layer.background1.images,

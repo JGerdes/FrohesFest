@@ -1,5 +1,6 @@
 var sections = [
 	{
+		"loadNext": 10000,
 		"segments": [
 			{
 				"x": [0, 200, 600, 900],
