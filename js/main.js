@@ -2,6 +2,16 @@
 
 var game = new Phaser.Game(1280, 720, Phaser.CANVAS, '');
 
+//  The Google WebFont Loader will look for this object, so create it before loading the script.
+WebFontConfig = {
+
+    //  The Google Fonts we want to load (specify as many as you like in the array)
+    google: {
+      families: ['Pacifico']
+    }
+
+};
+
 var layers = {},
 	sledge,
 	segments = [],
@@ -14,11 +24,14 @@ var layers = {},
 var bootState = {
 	preload: function(){
 		game.stage.backgroundColor = '#00695c';
+		game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 		game.load.image('box', 'assets/graphics/box.png');
 		game.load.image('progress', 'assets/graphics/progress.png');
 	},
 	create: function(){
-		game.state.start('load');
+		setTimeout(function(){
+			game.state.start('load');
+		}, 100);
 	}
 }
 
@@ -26,8 +39,13 @@ var loadState = {
 	preload: function() {
 		game.add.image(game.width/2 - 128, game.height/2 - 128, 'box');
 		loadState.bar = game.add.tileSprite(0, game.height - 64, 128, 64, 'progress');
+		text = game.add.text(game.world.centerX, 100, "Laden...");
+	    text.anchor.setTo(0.5);
 
-		game.load.onFileComplete.add(loadState.fileComplete, this);
+	    text.font = 'Pacifico';
+	    text.fontSize = 90;
+	    text.fill = '#ffffff';
+
 		game.load.image('background_light', 'assets/graphics/background_light.png');
 		game.load.image('background_dark', 'assets/graphics/background_dark.png');
 		game.load.image('foreground_dark', 'assets/graphics/foreground_dark.png');
@@ -46,16 +64,12 @@ var loadState = {
 		game.load.image('santa_hat', 'assets/graphics/santa_hat.png');
 		game.load.image('particle_snow', 'assets/graphics/particle_snow.png');
 	},
-
-	fileComplete: function(progress, cacheKey, success, totalLoaded, totalFiles){
-		console.log(progress, cacheKey, success, totalLoaded, totalFiles);
-	},
 	loadUpdate: function(){
 		loadState.bar.width += ((game.load.progress/100) * game.width - loadState.bar.width) / 10;
 		loadState.bar.tilePosition.x += 2;
 	},
 	create: function(){
-		//game.state.start('game');
+		game.state.start('game');
 	}
 }
 
