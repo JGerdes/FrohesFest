@@ -63,6 +63,8 @@ var loadState = {
 		game.load.image('santa_head', 'assets/graphics/santa_head.png');
 		game.load.image('santa_hat', 'assets/graphics/santa_hat.png');
 		game.load.image('particle_snow', 'assets/graphics/particle_snow.png');
+		game.load.image('game_over', 'assets/graphics/game_over.png');
+		game.load.spritesheet('button', 'assets/graphics/button.png', 203, 57);
 	},
 	loadUpdate: function(){
 		loadState.bar.width += ((game.load.progress/100) * game.width - loadState.bar.width) / 10;
@@ -166,10 +168,52 @@ var gameState = {
 	}
 }
 
+var gameOverState = {
+	preload: function(){
+		console.log("Autsch!");
+		console.log(this.dataURI);
+	 	var data = new Image();
+        data.src = this.dataURI;
+        game.cache.addImage('bg', this.dataURI, data);
+	},
+	create: function(){
+		//game.stage.backgroundColor = '#000000';
+		game.add.image(0, 0, 'bg').alpha = 0.8;
+		this.container = game.add.group();
+		this.bg = new Phaser.Image(game, 0, 0, 'game_over');
+		this.container.x = game.width/2 - 256;
+		this.container.y = game.height + 100;
+		this.container.add(this.bg);
+
+		var text = new Phaser.Text(game, 256, 64, "Autsch!");
+	    //text.anchor.setTo(0.5);
+	    text.font = 'Pacifico';
+	    text.fontSize = 60;
+	    text.fill = '#ffffff';
+	    this.container.add(text);
+
+	    var buttonTryAgain = new Phaser.Button(game, 280, 300, 'button', function(){
+	    	game.state.start('game');
+	    }, this, 1, 0, 2);
+	    this.container.add(buttonTryAgain);
+
+	    var buttonText = new Phaser.Text(game, buttonTryAgain.x + buttonTryAgain.width / 2, buttonTryAgain.y + buttonTryAgain.height - 24, "nochmal ");
+	    buttonText.anchor.setTo(0.5);
+	    buttonText.font = 'Pacifico';
+	    buttonText.fontSize = 30;
+	    buttonText.fill = '#ffffff';
+	    this.container.add(buttonText);
+	},
+	update: function(){
+		this.container.y += (game.world.height / 2 - 128 - 64 - this.container.y) / 10;
+	}
+};
+
 
 game.state.add('boot', bootState);
 game.state.add('load', loadState);
 game.state.add('game', gameState);
+game.state.add('gameOver', gameOverState);
 game.state.start('boot');
 
 

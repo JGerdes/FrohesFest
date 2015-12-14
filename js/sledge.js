@@ -80,7 +80,10 @@ Sledge.prototype.create = function(){
 };
 
 Sledge.prototype.die = function(){
-	console.log("Autsch!");
+	game.canvas.id = "game";
+	stackBlurCanvasRGB(game.canvas.id, 0, 0, game.width, game.height, 12);
+	game.state.states['gameOver'].dataURI = game.canvas.toDataURL();
+	game.state.start('gameOver');
 }
 
 Sledge.prototype.update = function() {
