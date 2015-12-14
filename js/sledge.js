@@ -13,7 +13,7 @@ function Sledge(game, collisionGroups) {
 }
 
 Sledge.prototype.create = function(){
-	this.sprite = game.add.sprite(100, 100, 'sledge');
+	this.sprite = game.add.sprite(100, -200, 'sledge');
 	this.game.camera.follow(this.sprite);
 	this.game.physics.p2.enable(this.sprite, false);
 	this.sprite.body.clearShapes();
@@ -105,6 +105,10 @@ Sledge.prototype.update = function() {
 		}else{
 			this.acceleration = 0;
 		}
+	}
+
+	if(this.sprite.body.x >= 42000){
+		this.sprite.body.x += (43000 - this.sprite.body.x) / 100;
 	}
 
 	/*this.snowEmitter.x = this.sprite.x - 64;
