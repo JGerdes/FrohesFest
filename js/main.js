@@ -205,7 +205,13 @@ var gameOverState = {
 	    this.container.add(buttonText);
 	},
 	update: function(){
-		this.container.y += (game.world.height / 2 - 128 - 64 - this.container.y) / 10;
+		if(Math.abs(this.container.y - (game.world.height / 2 - 128 - 64)) > 10){
+			this.container.y += (game.world.height / 2 - 128 - 64 - this.container.y) / 10;
+		}else{
+			if(game.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)){
+				game.state.start('game');
+			}
+		}
 	}
 };
 
