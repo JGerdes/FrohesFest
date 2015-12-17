@@ -4,7 +4,7 @@ function SectionController(sections, game){
 	this.currentSectionIndex = 0;
 }
 
-SectionController.prototype.getNextSection = function(layers){
+SectionController.prototype.getNextSection = function(layers, activeSegments){
 	var sec = this.sections[this.currentSectionIndex];
 	if(sec === undefined){
 		return;

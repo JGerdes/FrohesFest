@@ -11,16 +11,6 @@ WebFontConfig = {
     }
 
 };
-
-var layers = {},
-	sledge,
-	segments = [],
-	activeSegments = [],
-	collisionGroups = {},
-	currentSection,
-	sectionController,
-	darkerOverlays = [];
-
 var bootState = {
 	preload: function(){
 		game.stage.backgroundColor = '#00695c';
@@ -76,6 +66,16 @@ var loadState = {
 }
 
 var gameState = {
+	preload: function(){
+		this.layers = {};
+		this.sledge;
+		this.segments = [];
+		this.activeSegments = [];
+		this.collisionGroups = {};
+		this.currentSection;
+		this.sectionController;
+		this.darkerOverlays = [];
+	},
 	create: function() {
 		game.world.setBounds(0, 0, 44000, 720);
 
@@ -86,38 +86,38 @@ var gameState = {
 	    game.physics.p2.friction = 0.2;
 	    game.physics.p2.setImpactEvents(true);
 
-	    collisionGroups.segments = game.physics.p2.createCollisionGroup();
-	    collisionGroups.player = game.physics.p2.createCollisionGroup();
+	    this.collisionGroups.segments = game.physics.p2.createCollisionGroup();
+	    this.collisionGroups.player = game.physics.p2.createCollisionGroup();
 
 
 		game.add.image(0, 0, 'background_light').fixedToCamera = true;
 		var bgdark = game.add.image(0, 0, 'background_dark');
 		bgdark.fixedToCamera = true;
-		darkerOverlays.push(bgdark);
+		this.darkerOverlays.push(bgdark);
 
-		layers.background1 = game.add.group();
-		layers.background2 = game.add.group();
-		layers.tiledBackground = game.add.group();
-		layers.middleground = game.add.group();
+		this.layers.background1 = game.add.group();
+		this.layers.background2 = game.add.group();
+		this.layers.tiledBackground = game.add.group();
+		this.layers.middleground = game.add.group();
 
-		segments = [];
-		activeSegments = [];
+		this.segments = [];
+		this.activeSegments = [];
 
-		layers.track = game.add.group();
+		this.layers.track = game.add.group();
 
 		
-		sledge = new Sledge(game, collisionGroups);
-		sledge.create();
+		this.sledge = new Sledge(game, this.collisionGroups);
+		this.sledge.create();
 
-		layers.foreground = game.add.group();	
+		this.layers.foreground = game.add.group();	
 
-		sectionController = new SectionController(sections, game);
+		this.sectionController = new SectionController(sections, game);
 
-		currentSection = sectionController.getNextSection(layers);
-		currentSection.create();
-		segments = segments.concat(currentSection.segments);
+		this.currentSection = this.sectionController.getNextSection(this.layers, this.activeSegments);
+		this.currentSection.create();
+		this.segments = this.segments.concat(this.currentSection.segments);
 		for(var i=0; i<10; ++i){
-			activeSegments.push(segments.shift().create(layers.track, collisionGroups));
+			this.activeSegments.push(this.segments.shift().create(this.layers.track, this.collisionGroups));
 		}
 
 
@@ -125,44 +125,44 @@ var gameState = {
 		fg.fixedToCamera = true;
 		fg.blendMode = Phaser.blendModes.MULTIPLY;
 		fg.alpha = 0;
-		darkerOverlays.push(fg);
+		this.darkerOverlays.push(fg);
 
 
-		layers.middleground.create(40500, game.world.bounds.height - 512, "house01");
-		layers.middleground.create(41000, game.world.bounds.height - 512, "house01");
-		layers.middleground.create(41512, game.world.bounds.height - 512, "house01");
-		layers.middleground.create(42256, game.world.bounds.height - 512, "house01");
+		this.layers.middleground.create(40500, game.world.bounds.height - 512, "house01");
+		this.layers.middleground.create(41000, game.world.bounds.height - 512, "house01");
+		this.layers.middleground.create(41512, game.world.bounds.height - 512, "house01");
+		this.layers.middleground.create(42256, game.world.bounds.height - 512, "house01");
 		game.add.image(43200, game.world.bounds.height - 505, 'tree04');
 		 
 	},
 
 	update: function() {
 		
-		sledge.update();
-		currentSection.update();
-		darkerOverlays[0].alpha = game.camera.x / game.world.bounds.width;
-		darkerOverlays[1].alpha = 0.6 * game.camera.x / game.world.bounds.width;
+		this.sledge.update();
+		this.currentSection.update();
+		this.darkerOverlays[0].alpha = game.camera.x / game.world.bounds.width;
+		this.darkerOverlays[1].alpha = 0.6 * game.camera.x / game.world.bounds.width;
 
-		if(activeSegments.length > 0 && !activeSegments[0].isVisible()){
-			activeSegments.shift().destroy();
-			if(activeSegments.length < 3 && segments.length > 0){
-				activeSegments.push(segments.shift().create(layers.track, collisionGroups));
+		if(this.activeSegments.length > 0 && !this.activeSegments[0].isVisible()){
+			this.activeSegments.shift().destroy();
+			if(this.activeSegments.length < 3 && this.segments.length > 0){
+				this.activeSegments.push(this.segments.shift().create(this.layers.track, this.collisionGroups));
 			}
 		}
 
-		if(currentSection.loadNext != undefined){
-			if(sledge.sprite.body.x > currentSection.loadNext ){
-				var nextSection = sectionController.getNextSection(layers);
-				layers.background1.removeAll();
-				layers.background2.removeAll();
-				layers.tiledBackground.removeAll();
+		if(this.currentSection.loadNext != undefined){
+			if(this.sledge.sprite.body.x > this.currentSection.loadNext ){
+				var nextSection = this.sectionController.getNextSection(this.layers, this.activeSegments);
+				this.layers.background1.removeAll();
+				this.layers.background2.removeAll();
+				this.layers.tiledBackground.removeAll();
 
-				nextSection.middleground.lastGenerated = currentSection.middleground.lastGenerated;
+				nextSection.middleground.lastGenerated = this.currentSection.middleground.lastGenerated;
 				nextSection.create();
-				nextSection.tiledBackground.part1.x = currentSection.tiledBackground.part1.x;
-				nextSection.tiledBackground.part2.x = currentSection.tiledBackground.part2.x;
-				segments = segments.concat(nextSection.segments);
-				currentSection = nextSection;
+				nextSection.tiledBackground.part1.x = this.currentSection.tiledBackground.part1.x;
+				nextSection.tiledBackground.part2.x = this.currentSection.tiledBackground.part2.x;
+				this.segments = this.segments.concat(nextSection.segments);
+				this.currentSection = nextSection;
 			}
 		}		
 	}
