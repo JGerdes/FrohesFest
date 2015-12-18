@@ -54,6 +54,8 @@ var loadState = {
 		game.load.image('santa_hat', 'assets/graphics/santa_hat.png');
 		game.load.image('particle_snow', 'assets/graphics/particle_snow.png');
 		game.load.image('game_over', 'assets/graphics/game_over.png');
+		game.load.image('santa_head_large', 'assets/graphics/santa_head_large.png');
+		game.load.image('controls', 'assets/graphics/controls.png');
 		game.load.spritesheet('button', 'assets/graphics/button.png', 203, 57);
 	},
 	loadUpdate: function(){
@@ -61,6 +63,49 @@ var loadState = {
 		loadState.bar.tilePosition.x += 2;
 	},
 	create: function(){
+		game.state.start('splash');
+	}
+}
+
+var splashState = {
+	create: function(){
+		game.add.image(game.width/2 - 150, 128, 'santa_head_large');
+		game.add.image(game.width/2 - 128, 600, 'controls');
+		text = game.add.text(game.world.centerX, 420, "Frohes Fest!");
+	    text.anchor.setTo(0.5);
+
+	    text.font = 'Pacifico';
+	    text.fontSize = 60;
+	    text.fill = '#ffffff';
+
+	    game.input.onDown.add(this.startGame);
+	},
+	startGame: function(){
+		game.input.onDown.removeAll();
+		game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+		
+		if (!game.device.desktop) {
+			var hint = document.querySelector('#orientation-hint');
+			var fullscreenHandler = function(){
+				if(game.scale.isLandscape){
+					game.scale.startFullScreen(false);
+					game.paused = false;
+				}
+			};
+			document.addEventListener('click', fullscreenHandler);
+			game.input.onDown.add(fullscreenHandler);
+			var orientationHandler = function(){
+				if(game.scale.isPortrait){
+					game.paused = true;
+					hint.style.display = 'block';
+					game.scale.stopFullScreen();
+				}else{
+					hint.style.display = 'none';
+				}
+			};
+			game.scale.onOrientationChange.add(orientationHandler);
+			orientationHandler();
+		}
 		game.state.start('game');
 	}
 }
@@ -77,6 +122,15 @@ var gameState = {
 		this.darkerOverlays = [];
 	},
 	create: function() {
+		if(!game.device.desktop){
+			game.input.onDown.add(function(){
+				if(game.scale.isLandscape){
+					game.scale.startFullScreen(false);
+					game.paused = false;
+				}
+			});
+		}
+
 		game.world.setBounds(0, 0, 44000, 720);
 
 		game.physics.startSystem(Phaser.Physics.P2JS);
@@ -177,6 +231,15 @@ var gameOverState = {
         game.cache.addImage('bg', this.dataURI, data);
 	},
 	create: function(){
+		if(!game.device.desktop){
+			game.input.onDown.add(function(){
+				if(game.scale.isLandscape){
+					game.scale.startFullScreen(false);
+					game.paused = false;
+				}
+			});
+		}
+
 		//game.stage.backgroundColor = '#000000';
 		game.add.image(0, 0, 'bg').alpha = 0.8;
 		this.container = game.add.group();
@@ -218,6 +281,7 @@ var gameOverState = {
 
 game.state.add('boot', bootState);
 game.state.add('load', loadState);
+game.state.add('splash', splashState);
 game.state.add('game', gameState);
 game.state.add('gameOver', gameOverState);
 game.state.start('boot');
