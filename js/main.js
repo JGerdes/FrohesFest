@@ -56,6 +56,8 @@ var loadState = {
 		game.load.image('game_over', 'assets/graphics/game_over.png');
 		game.load.image('santa_head_large', 'assets/graphics/santa_head_large.png');
 		game.load.image('controls', 'assets/graphics/controls.png');
+		game.load.image('frohes_fest', 'assets/graphics/frohes_fest.png');
+		game.load.image('danke', 'assets/graphics/danke.png');
 		game.load.spritesheet('button', 'assets/graphics/button.png', 203, 57);
 	},
 	loadUpdate: function(){
@@ -120,6 +122,7 @@ var gameState = {
 		this.currentSection;
 		this.sectionController;
 		this.darkerOverlays = [];
+		this.finalOverlays = {};
 	},
 	create: function() {
 		if(!game.device.desktop){
@@ -218,7 +221,26 @@ var gameState = {
 				this.segments = this.segments.concat(nextSection.segments);
 				this.currentSection = nextSection;
 			}
-		}		
+		}	
+
+		if(this.sledge.sprite.body.x > 42000){
+			if(this.finalOverlays.greeting === undefined){
+				this.finalOverlays.greeting = game.add.image(640 - 256, 32, 'frohes_fest');
+				this.finalOverlays.greeting.fixedToCamera = true;
+				this.finalOverlays.greeting.alpha = 0;
+			}else{
+				this.finalOverlays.greeting.alpha += 0.005;
+			}
+		}	
+		if(this.sledge.sprite.body.x > 43000){
+			if(this.finalOverlays.thanks === undefined){
+				this.finalOverlays.thanks = game.add.image(640 - 206, 640, 'danke');
+				this.finalOverlays.thanks.fixedToCamera = true;
+				this.finalOverlays.thanks.alpha = 0;
+			}else{
+				this.finalOverlays.thanks.alpha += 0.005;
+			}
+		}
 	}
 }
 

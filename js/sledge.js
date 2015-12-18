@@ -13,7 +13,12 @@ function Sledge(game, collisionGroups) {
 }
 
 Sledge.prototype.create = function(){
-	this.sprite = game.add.sprite(100, -200, 'sledge');
+	if(window.location.hash == "#end"){
+		console.log("start @ 'end'");
+		this.sprite = game.add.sprite(41000, 0, 'sledge');
+	}else{
+		this.sprite = game.add.sprite(100, -200, 'sledge');
+	}
 	this.game.camera.follow(this.sprite);
 	this.game.physics.p2.enable(this.sprite, false);
 	this.sprite.body.clearShapes();
@@ -77,6 +82,10 @@ Sledge.prototype.create = function(){
 	/*this.snowEmitter = this.game.add.emitter(this.sprite.x, this.sprite.y, 200);
 	this.snowEmitter.makeParticles('particle_snow');
     this.snowEmitter.start(false, 2000, 20);*/
+    /*var sledge = this;
+    setInterval(function(){
+		console.log(sledge.sprite.body.x, sledge.sprite.body.y);
+    }, 1000);*/
 };
 
 Sledge.prototype.die = function(){
