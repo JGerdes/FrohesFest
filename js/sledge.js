@@ -88,7 +88,7 @@ Sledge.prototype.die = function(){
 
 Sledge.prototype.update = function() {
 	if((this.input.keyboard.isDown(Phaser.KeyCode.SPACEBAR)
-		|| this.input.pointer1.isDown) && this.sprite.body.y > 0){
+		|| game.input.activePointer.isDown) && this.sprite.body.y > 0){
 		if(this.acceleration < this.maxAcceleration){
 			this.acceleration += 2;	
 		}else{
