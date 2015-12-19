@@ -52,6 +52,7 @@ var loadState = {
 		game.load.image('sledge', 'assets/graphics/sledge.png');
 		game.load.image('santa_head', 'assets/graphics/santa_head.png');
 		game.load.image('santa_hat', 'assets/graphics/santa_hat.png');
+		game.load.image('checkpoint', 'assets/graphics/checkpoint.png');
 		game.load.image('particle_snow', 'assets/graphics/particle_snow.png');
 		game.load.image('game_over', 'assets/graphics/game_over.png');
 		game.load.image('santa_head_large', 'assets/graphics/santa_head_large.png');
@@ -67,9 +68,9 @@ var loadState = {
 	create: function(){
 		var checkpoints = [];
 		game.state.states['game'].checkpoints = checkpoints;
-		checkpoints.push(new Checkpoint('checkpoint', 14000, 600, '4km'));
+		checkpoints.push(new Checkpoint('checkpoint', 14000, 540, '4km'));
 		checkpoints.push(new Checkpoint('checkpoint', 20000, 500, '3km'));
-		checkpoints.push(new Checkpoint('checkpoint', 25000, 400, '2km'));
+		checkpoints.push(new Checkpoint('checkpoint', 25000, 320, '2km'));
 		checkpoints.push(new Checkpoint('checkpoint', 30200, 100, '1km'));
 
 		if(window.location.hash.length > 0){
@@ -177,7 +178,6 @@ var gameState = {
 		this.activeSegments = [];
 
 		this.layers.track = game.add.group();
-		this.layers.checkpoints = game.add.group();
 		
 		this.sledge = new Sledge(game, this.collisionGroups);
 		var lastCheckpoint = null;
@@ -194,6 +194,9 @@ var gameState = {
 		}else{	
 			this.sledge.create();	
 		}
+
+
+		this.layers.checkpoints = game.add.group();
 
 		this.layers.foreground = game.add.group();	
 
