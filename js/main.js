@@ -68,6 +68,7 @@ var loadState = {
 	create: function(){
 		var checkpoints = [];
 		game.state.states['game'].checkpoints = checkpoints;
+		checkpoints.push(new Checkpoint('checkpoint', 6900, 500, '5km'));
 		checkpoints.push(new Checkpoint('checkpoint', 14000, 540, '4km'));
 		checkpoints.push(new Checkpoint('checkpoint', 20000, 500, '3km'));
 		checkpoints.push(new Checkpoint('checkpoint', 25000, 320, '2km'));
@@ -223,9 +224,13 @@ var gameState = {
 		this.layers.middleground.create(42256, game.world.bounds.height - 512, "house01");
 		game.add.image(43200, game.world.bounds.height - 505, 'tree04');
 
+
+		//pseudo checkpoint
+		new Checkpoint('checkpoint', 540, 360, '6km').create(this.layers.checkpoints);
 		for(var i=0; i<this.checkpoints.length; i++){
 			this.checkpoints[i].create(this.layers.checkpoints);
 		}
+
 		 
 	},
 
