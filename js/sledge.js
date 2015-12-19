@@ -77,10 +77,10 @@ Sledge.prototype.create = function(x){
 	/*this.snowEmitter = this.game.add.emitter(this.sprite.x, this.sprite.y, 200);
 	this.snowEmitter.makeParticles('particle_snow');
     this.snowEmitter.start(false, 2000, 20);*/
-    var sledge = this;
+    /*var sledge = this;
     setInterval(function(){
 		console.log(sledge.sprite.body.x, sledge.sprite.body.y);
-    }, 1000);
+    }, 1000);*/
 };
 
 Sledge.prototype.die = function(){
@@ -117,7 +117,7 @@ Sledge.prototype.update = function() {
 	}
 
 	if(this.sprite.body.x >= 42000){
-		this.sprite.body.x += (43000 - this.sprite.body.x) / 100;
+		this.sprite.body.x += (43000 - this.sprite.body.x) / 200;
 	}
 
 	/*this.snowEmitter.x = this.sprite.x - 64;

@@ -1,6 +1,7 @@
 //(function(){
 
 var game = new Phaser.Game(1280, 720, Phaser.CANVAS, '');
+var musicManager;
 
 //  The Google WebFont Loader will look for this object, so create it before loading the script.
 WebFontConfig = {
@@ -60,6 +61,12 @@ var loadState = {
 		game.load.image('frohes_fest', 'assets/graphics/frohes_fest.png');
 		game.load.image('danke', 'assets/graphics/danke.png');
 		game.load.spritesheet('button', 'assets/graphics/button.png', 203, 57);
+
+		game.load.audio('intro', ['assets/audio/intro.mp3', 'assets/audio/intro.ogg']);
+		game.load.audio('part1', ['assets/audio/part1.mp3', 'assets/audio/part1.ogg']);
+		game.load.audio('part2', ['assets/audio/part2.mp3', 'assets/audio/part2.ogg']);
+		game.load.audio('outro', ['assets/audio/outro.mp3', 'assets/audio/outro.ogg']);
+
 	},
 	loadUpdate: function(){
 		loadState.bar.width += ((game.load.progress/100) * game.width - loadState.bar.width) / 10;
@@ -97,6 +104,10 @@ var splashState = {
 	    text.font = 'Pacifico';
 	    text.fontSize = 60;
 	    text.fill = '#ffffff';
+
+	    musicManager = new MusicManager(['intro', 'part1', 'part2', 'outro']);
+	    musicManager.setNext('intro');
+	    musicManager.setNext('part1');
 
 	    game.input.onDown.add(this.startGame);
 	},
@@ -286,6 +297,22 @@ var gameState = {
 		for(var i=0; i<this.checkpoints.length; i++){
 			this.checkpoints[i].check(this.sledge.sprite.body.x);
 		}
+
+		this.updateMusic();
+		
+	},
+
+	updateMusic: function(){
+		if(this.sledge.sprite.body.x > 20000 && this.sledge.sprite.body.x < 40000){
+			musicManager.setNext('part2');
+		}
+		if(this.sledge.sprite.body.x >= 40000 && !(musicManager.playedLast)){
+			musicManager.playedLast = true;
+			musicManager.instant('outro');
+		}
+
+
+		musicManager.update();
 	}
 }
 
@@ -342,6 +369,7 @@ var gameOverState = {
 				game.state.start('game');
 			}
 		}
+		musicManager.update();
 	}
 };
 
