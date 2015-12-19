@@ -65,6 +65,22 @@ var loadState = {
 		loadState.bar.tilePosition.x += 2;
 	},
 	create: function(){
+		var checkpoints = [];
+		game.state.states['game'].checkpoints = checkpoints;
+		checkpoints.push(new Checkpoint('checkpoint', 14000, 600, '4km'));
+		checkpoints.push(new Checkpoint('checkpoint', 20000, 500, '3km'));
+		checkpoints.push(new Checkpoint('checkpoint', 25000, 400, '2km'));
+		checkpoints.push(new Checkpoint('checkpoint', 30200, 100, '1km'));
+
+		if(window.location.hash.length > 0){
+			var checkpointId = parseInt(window.location.hash.substring(1));
+			if(!isNaN(checkpointId) && checkpointId > 0 && checkpointId <= checkpoints.length){
+				for(var i=0; i<checkpointId; i++){
+					checkpoints[i].reached = true;
+				}
+			}
+		}
+
 		game.state.start('splash');
 	}
 }
@@ -161,10 +177,23 @@ var gameState = {
 		this.activeSegments = [];
 
 		this.layers.track = game.add.group();
-
+		this.layers.checkpoints = game.add.group();
 		
 		this.sledge = new Sledge(game, this.collisionGroups);
-		this.sledge.create();
+		var lastCheckpoint = null;
+		for(var i=0; i<this.checkpoints.length; i++){
+			if(this.checkpoints[i].reached){
+				lastCheckpoint = this.checkpoints[i];
+			}else{
+				break;
+			}
+		}
+
+		if(lastCheckpoint != null){
+			this.sledge.create(lastCheckpoint.x);
+		}else{	
+			this.sledge.create();	
+		}
 
 		this.layers.foreground = game.add.group();	
 
@@ -190,6 +219,10 @@ var gameState = {
 		this.layers.middleground.create(41512, game.world.bounds.height - 512, "house01");
 		this.layers.middleground.create(42256, game.world.bounds.height - 512, "house01");
 		game.add.image(43200, game.world.bounds.height - 505, 'tree04');
+
+		for(var i=0; i<this.checkpoints.length; i++){
+			this.checkpoints[i].create(this.layers.checkpoints);
+		}
 		 
 	},
 
@@ -240,6 +273,10 @@ var gameState = {
 			}else{
 				this.finalOverlays.thanks.alpha += 0.005;
 			}
+		}
+
+		for(var i=0; i<this.checkpoints.length; i++){
+			this.checkpoints[i].check(this.sledge.sprite.body.x);
 		}
 	}
 }
